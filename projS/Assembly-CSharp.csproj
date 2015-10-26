@@ -47,9 +47,22 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\BaseCharacterController.cs" />
-     <Compile Include="Assets\Scripts\ForCombo_p240.cs" />
-     <Compile Include="Assets\Scripts\PlayerController.cs" />
-     <Compile Include="Assets\Scripts\PlayerMain.cs" />
+     <Compile Include="Assets\Scripts\CameraFollow.cs" />
+     <Compile Include="Assets\Scripts\CombatAI.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyBodyCollider.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyController.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyForAnimationEvent.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyMain.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyMain_A.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyMain_B.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyMain_C.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemySprite.cs" />
+     <Compile Include="Assets\Scripts\FireBullet.cs" />
+     <Compile Include="Assets\Scripts\Player\ForAnimationEvent_p240.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerBodyController.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerMain.cs" />
+     <Compile Include="Assets\Scripts\StageObject_DogPile.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>

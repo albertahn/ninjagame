@@ -30,8 +30,24 @@ public class BaseCharacterController : MonoBehaviour {
 	protected GameObject groundCheck_OnMoveObject;
 	protected GameObject groundCheck_OnEnemyObject;
 
-	protected virtual void Awake(){
+	protected bool addForceVxEnabled = false;
+	protected float addForceVxStartTime = 0.0f;
 
+	protected bool addVelocityEnabled = false;
+	protected float addVelocityVx = 0.0f;
+	protected float addVelocityVy = 0.0f;
+
+	protected bool setVelocityVxEnabled = false;
+	protected bool setVelocityVyEnabled = false;
+	protected float setVelocityVx = 0.0f;
+	protected float setVelocityVy = 0.0f;
+
+	public bool superAmor = false;
+	public bool superAmor_jumpAttackDmg = true;
+
+	public GameObject[] fireObjectList;
+
+	protected virtual void Awake(){
 		animator = GetComponentInChildren<Animator> ();
 		groundCheck_L = transform.Find ("GroundCheck_L");
 		groundCheck_C = transform.Find ("GroundCheck_C");
@@ -90,7 +106,30 @@ public class BaseCharacterController : MonoBehaviour {
 
 		FixedUpdateCharacter ();
 
-		rigidbody2D.velocity = new Vector2 (speedVx, rigidbody2D.velocity.y);
+		if (addForceVxEnabled) {
+			if(Time.fixedTime - addForceVxStartTime > 0.5f){
+				addForceVxEnabled = false;
+			}
+		}else{
+			rigidbody2D.velocity = new Vector2 (speedVx, rigidbody2D.velocity.y);
+		}
+
+		if (addVelocityEnabled) {
+			addVelocityEnabled = false;
+			rigidbody2D.velocity = new Vector2(
+				rigidbody2D.velocity.x + addVelocityVx,
+				rigidbody2D.velocity.y + addVelocityVy);
+		}
+
+		if(setVelocityVxEnabled){
+			setVelocityVxEnabled = false;
+			rigidbody2D.velocity = new Vector2(setVelocityVx,rigidbody2D.velocity.y);
+		}
+		if(setVelocityVyEnabled){
+			setVelocityVyEnabled = false;
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,setVelocityVy);
+		}
+
 
 		float vx = Mathf.Clamp (rigidbody2D.velocity.x, velocityMin.x, velocityMax.x);
 		float vy = Mathf.Clamp (rigidbody2D.velocity.y, velocityMin.y, velocityMax.y);
@@ -98,6 +137,47 @@ public class BaseCharacterController : MonoBehaviour {
 	}
 
 	protected virtual void FixedUpdateCharacter(){
+	}
+
+	public virtual void AddForceAnimatorVx(float vx){
+		if(vx != 0.0f){
+			rigidbody2D.AddForce(new Vector2(vx*dir,0.0f));
+			addForceVxEnabled = true;
+			addForceVxStartTime = Time.fixedTime;
+		}
+	}
+
+	public virtual void AddForceAnimatorVy(float vy){
+		if(vy != 0.0f){
+			rigidbody2D.AddForce(new Vector2(0.0f,vy));
+			jumped =true;
+			jumpStartTime = Time.fixedTime;
+		}
+	}
+
+	public virtual void AddVelocityVx(float vx){
+		addVelocityEnabled = true;
+		addVelocityVx = vx * dir;
+	}
+
+	public virtual void AddVelocityVy(float vy){
+		addVelocityEnabled = true;
+		addVelocityVy = vy;
+	}
+
+	public virtual void SetVelocityVx(float vx){
+		setVelocityVxEnabled = true;
+		setVelocityVx = vx * dir;
+	}
+
+	public virtual void SetVelocityVy(float vy){
+		setVelocityVyEnabled = true;
+		setVelocityVy = vy;
+	}
+
+	public virtual void SetLightGravity(){
+		rigidbody2D.velocity = new Vector2 (0.0f, 0.0f);
+		rigidbody2D.gravityScale = 0.1f;
 	}
 
 	public virtual void ActionMove(float n){
@@ -108,6 +188,14 @@ public class BaseCharacterController : MonoBehaviour {
 		} else {
 			speedVx = 0;
 			animator.SetTrigger("Idle");
+		}
+	}
+
+	public void ActionFire(){
+		Transform goFire = transform.Find ("Muzzle");
+		foreach(GameObject fireObject in fireObjectList){
+			GameObject go = Instantiate(fireObject,goFire.position,Quaternion.identity) as GameObject;
+			go.GetComponent<FireBullet>().ownwer = transform;
 		}
 	}
 
@@ -123,5 +211,36 @@ public class BaseCharacterController : MonoBehaviour {
 		hp = _hp;
 		hpMax = _hpMax;
 		return(hp <= 0);
+	}
+
+	public void EnableSuperAmor(){
+		superAmor = true;
+	}
+	public void DisableSuperAmor(){
+		superAmor = false;
+	}
+
+	public bool ActionLookUp(GameObject go,float near){
+		if(Vector3.Distance(transform.position,go.transform.position)>near){
+			dir= (transform.position.x < go.transform.position.x)?+1:-1;
+			return true;
+		}
+		return false;
+	}
+
+	public bool ActionMoveToNear(GameObject go,float near){
+		if(Vector3.Distance(transform.position,go.transform.position)>near){
+			ActionMove ((transform.position.x < go.transform.position.x)?+1.0f:-1.0f);
+			return true;
+		}
+		return false;
+	}
+
+	public bool ActionMoveToFar(GameObject go,float far){
+		if(Vector3.Distance(transform.position,go.transform.position)<far){
+			ActionMove ((transform.position.x>go.transform.position.x)?+1.0f:-1.0f);
+			return true;
+		}
+		return false;
 	}
 }
