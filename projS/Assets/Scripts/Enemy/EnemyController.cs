@@ -118,6 +118,7 @@ public class EnemyController : BaseCharacterController {
 			addScoreV = (int)((float)addScoreV * (grounded?1.0:1.5f));
 			PlayerController.score +=addScoreV;
 		}
+		playerCtrl.AddCombo ();
 	}
 
 	public override void Dead(bool gameOver){

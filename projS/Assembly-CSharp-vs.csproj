@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{3441D4C9-57E7-A1A6-193B-8D0235873919}</ProjectGuid>
+	<ProjectGuid>{5BBA7464-F9B5-D91B-6CE8-BE9B34465734}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -49,6 +49,8 @@
      <Compile Include="Assets\Scripts\BaseCharacterController.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\CombatAI.cs" />
+     <Compile Include="Assets\Scripts\Effect_FadeObject.cs" />
+     <Compile Include="Assets\Scripts\Effect_ParticleChrDir.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyBodyCollider.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyController.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyForAnimationEvent.cs" />
@@ -62,7 +64,16 @@
      <Compile Include="Assets\Scripts\Player\PlayerBodyController.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMain.cs" />
+     <Compile Include="Assets\Scripts\StageA_Sun.cs" />
+     <Compile Include="Assets\Scripts\StageA_TimeEffect.cs" />
+     <Compile Include="Assets\Scripts\StageObject_BlockA.cs" />
      <Compile Include="Assets\Scripts\StageObject_DogPile.cs" />
+     <Compile Include="Assets\Scripts\StageTrigger_Camera.cs" />
+     <Compile Include="Assets\Scripts\Stage_AfterImage.cs" />
+     <Compile Include="Assets\Scripts\Stage_CreateStaticShadowAll.cs" />
+     <Compile Include="Assets\Scripts\Stage_Shadow.cs" />
+     <Compile Include="Assets\Scripts\Unity2DSortingLayer.cs" />
+     <Compile Include="Assets\Scripts\zFoxTween.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>

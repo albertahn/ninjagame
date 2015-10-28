@@ -30,7 +30,32 @@ public class PlayerBodyController : MonoBehaviour {
 				playerCtrl.ActionDamage(fireBullet.attackDamage);
 				Destroy(other.gameObject);
 			}
+		}else if(other.tag=="CameraTrigger"){
+			Camera.main.GetComponent<CameraFollow>().SetCamera(
+				other.GetComponent<StageTrigger_Camera>().param);
 		}
+		else if(other.tag == "Item"){
+			if(other.name == "Item_Koban"){
+				PlayerController.score +=10;
+			}else if(other.name =="Item_Ohoban"){
+				PlayerController.score +=100000;
+			}else if(other.name =="Item_Hyoutan"){
+				playerCtrl.SetHP(playerCtrl.hp + playerCtrl.hpMax/3,playerCtrl.hpMax);
+			}else if(other.name == "Item_Makimono"){
+				playerCtrl.superMode = true;
+				playerCtrl.GetComponent<Stage_AfterImage>().afterImageEnabled = true;
+				playerCtrl.basScaleX = 2.0f;
+				playerCtrl.transform.localScale = new Vector3(playerCtrl.basScaleX,2.0f,1.0f);
+				Invoke("SuperModeEnd",10.0f);
+			}
+			Destroy(other.gameObject);
+		}
+	}
+	void SuperModeEnd(){
+		playerCtrl.superMode = false;
+		playerCtrl.GetComponent<Stage_AfterImage> ().afterImageEnabled = false;
+		playerCtrl.basScaleX = 1.0f;
+		playerCtrl.transform.localScale = new Vector3 (playerCtrl.basScaleX, 1.0f, 1.0f);
 	}
 
 	void OnCollisionStay2D(Collision2D col){

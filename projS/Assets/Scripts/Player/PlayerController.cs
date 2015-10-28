@@ -29,6 +29,14 @@ public class PlayerController : BaseCharacterController {
 	[System.NonSerialized]public Vector3 enemyActiveZonePointA;
 	[System.NonSerialized]public Vector3 enemyActiveZonePointB;
 	[System.NonSerialized]public float groundY = 0.0f;
+	[System.NonSerialized]public int comboCount = 0;
+	[System.NonSerialized]public bool superMode = false;
+
+	LineRenderer hudHpBar;
+	TextMesh hudScore;
+	TextMesh hudCombo;
+
+	float comboTimer = 0.0f;
 
 	public static GameObject GetGameObject(){
 		return GameObject.FindGameObjectWithTag ("Player");
@@ -46,6 +54,10 @@ public class PlayerController : BaseCharacterController {
 	protected override void Awake(){
 		base.Awake ();
 
+		hudHpBar = GameObject.Find ("HUD_HPBar").GetComponent<LineRenderer> ();
+		hudScore = GameObject.Find ("HUD_Score").GetComponent<TextMesh> ();
+		hudCombo = GameObject.Find ("HUD_Combo").GetComponent<TextMesh> ();
+
 		speed = initSpeed;
 		SetHP (initHpMax, initHpMax);
 
@@ -55,6 +67,26 @@ public class PlayerController : BaseCharacterController {
 		enemyActiveZonePointB = new Vector3
 			(boxCol2D.center.x + boxCol2D.size.x / 2.0f, boxCol2D.center.y + boxCol2D.size.y / 2.0f);
 		boxCol2D.transform.gameObject.SetActive (false);
+	}
+
+	protected override void Update(){
+		base.Update ();
+		hudHpBar.SetPosition (1, new Vector3 (5.0f * (hp / hpMax), 0.0f, 0.0f));
+		hudScore.text = string.Format ("Score {0}", score);
+
+		if(comboTimer <= 0.0f){
+			hudCombo.gameObject.SetActive(false);
+			comboCount = 0;
+			comboTimer = 0.0f;
+		}else{
+			comboTimer -= Time.deltaTime;
+			if(comboTimer>5.0f){
+				comboTimer = 5.0f;
+			}
+			float s = 0.3f + 0.5f * comboTimer;
+			hudCombo.gameObject.SetActive(true);
+			hudCombo.transform.localScale = new Vector3(s,s,1.0f);
+		}
 	}
 
 	protected override void FixedUpdateCharacter(){
@@ -233,6 +265,9 @@ public class PlayerController : BaseCharacterController {
 
 		SetHP(0,hpMax);
 		Invoke ("GameOver", 3.0f);
+
+		GameObject.Find ("HUD_Dead").GetComponent<MeshRenderer> ().enabled = true;
+		//GameObject.Find ("HUD_DeadShadow").GetComponent<MeshRenderer> ().enabled = true;
 	}
 
 	public void GameOver(){
@@ -247,5 +282,10 @@ public class PlayerController : BaseCharacterController {
 		nowHp = _hp;
 		nowHpMax = _hpMax;
 		return base.SetHP (_hp, _hpMax);
+	}
+	public void AddCombo(){
+		comboCount++;
+		comboTimer += 1.0f;
+		hudCombo.text = string.Format ("Combo {0}", comboCount);
 	}
 }

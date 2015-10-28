@@ -19,6 +19,8 @@ public class StageObject_DogPile : MonoBehaviour {
 		}
 		if(flag){
 			foreach(GameObject destroyObject in destroyObjectList){
+				destroyObject.AddComponent<Effect_FadeObject>();
+				destroyObject.SendMessage("FadeStart");
 				Destroy(destroyObject,1.0f);
 			}
 			CancelInvoke("CheckEnemy");
