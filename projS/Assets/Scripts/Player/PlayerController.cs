@@ -38,6 +38,12 @@ public class PlayerController : BaseCharacterController {
 
 	float comboTimer = 0.0f;
 
+	public static bool checkPointEnabled = false;
+	public static string checkPointSceneName = "";
+	public static string checkPointLabelName = "";
+	public static float checkPointHp = 0;
+	public static bool initParam = true;
+
 	public static GameObject GetGameObject(){
 		return GameObject.FindGameObjectWithTag ("Player");
 	}
@@ -67,6 +73,28 @@ public class PlayerController : BaseCharacterController {
 		enemyActiveZonePointB = new Vector3
 			(boxCol2D.center.x + boxCol2D.size.x / 2.0f, boxCol2D.center.y + boxCol2D.size.y / 2.0f);
 		boxCol2D.transform.gameObject.SetActive (false);
+
+		if(initParam){
+			SetHP(initHpMax,initHpMax);
+			initParam = false;
+		}
+		if(SetHP(PlayerController.nowHp,PlayerController.nowHpMax)){
+			SetHP(1,initHpMax);
+		}
+
+		if(checkPointEnabled){
+			StageTrigger_CheckPoint[] triggerList = GameObject.Find("Stage").GetComponentsInChildren<StageTrigger_CheckPoint>();
+			foreach(StageTrigger_CheckPoint trigger in triggerList){
+				if(trigger.labelName == checkPointLabelName){
+					transform.position = trigger.transform.position;
+					groundY = transform.position.y;
+					Camera.main.GetComponent<CameraFollow>().SetCamera(trigger.cameraParam);
+					break;
+				}
+			}
+		}
+		Camera.main.transform.position = new Vector3 (
+			transform.position.x, groundY, Camera.main.transform.position.z);
 	}
 
 	protected override void Update(){
@@ -134,6 +162,18 @@ public class PlayerController : BaseCharacterController {
 		}
 
 		//Camera.main.transform.position = transform.position - Vector3.forward;
+	}
+
+	public void ActionEtc(){
+		Collider2D[] otherAll = Physics2D.OverlapPointAll (groundCheck_C.position);
+		foreach(Collider2D other in otherAll){
+			if(other.tag == "EventTrigger"){
+				StageTrigger_Link link = other.GetComponent<StageTrigger_Link>();
+				if(link!=null){
+					link.Jump();
+				}
+			}
+		}
 	}
 
 
@@ -263,15 +303,24 @@ public class PlayerController : BaseCharacterController {
 		}
 		base.Dead (gameOver);
 
-		SetHP(0,hpMax);
-		Invoke ("GameOver", 3.0f);
-
+		if(gameOver){
+			SetHP(0,hpMax);
+			Invoke("GameOver",3.0f);
+		}else{
+			SetHP(hp/2,hpMax);
+			Invoke ("GameReset", 3.0f);
+		}
+	
 		GameObject.Find ("HUD_Dead").GetComponent<MeshRenderer> ().enabled = true;
 		//GameObject.Find ("HUD_DeadShadow").GetComponent<MeshRenderer> ().enabled = true;
 	}
 
 	public void GameOver(){
 		score = 0;
+		nowHp = checkPointHp;
+		Application.LoadLevel (Application.loadedLevelName);
+	}
+	void GameReset(){
 		Application.LoadLevel (Application.loadedLevelName);
 	}
 

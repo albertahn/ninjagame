@@ -1,6 +1,7 @@
 fileFormatVersion: 2
-guid: 9eea01cf37e13d04e99656cc7ccd9420
+guid: 80bf02d55a4ebff47b8fa5580dc9f84d
 TextureImporter:
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -24,7 +25,7 @@ TextureImporter:
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
-    aniso: 1
+    aniso: -1
     mipBias: -1
     wrapMode: 0
   nPOTScale: 0
@@ -35,6 +36,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
   textureType: 5
@@ -44,15 +46,6 @@ TextureImporter:
     textureFormat: 7
     compressionQuality: 50
   spriteSheet:
-    sprites:
-    - name: StageB_Back_Wall_Front_Multi_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: .5, y: .5}
+    sprites: []
   spritePackingTag: 
   userData: 

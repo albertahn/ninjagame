@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerMain : MonoBehaviour {
 
 	public PlayerController playerCtrl;
+	bool actionEtcRun = true;
 
 	void Awke(){
 		playerCtrl = GetComponent<PlayerController> ();
@@ -26,6 +27,14 @@ public class PlayerMain : MonoBehaviour {
 				playerCtrl.ActionAttack();
 			}else{
 				playerCtrl.ActionAttackJump();
+			}
+		}
+		if(Input.GetAxisRaw("Vertical") > 0.7f){
+			if(actionEtcRun){
+				playerCtrl.ActionEtc();
+				actionEtcRun=false;
+			}else{
+				actionEtcRun = true;
 			}
 		}
 	}

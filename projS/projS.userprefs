@@ -1,11 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\StageA_TimeEffect.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Player\PlayerController.cs">
     <Files>
-      <File FileName="Assets\Scripts\StageTrigger_Camera.cs" Line="11" Column="36" />
-      <File FileName="Assets\Scripts\Player\PlayerBodyController.cs" Line="44" Column="44" />
-      <File FileName="Assets\Scripts\StageA_Sun.cs" Line="16" Column="84" />
-      <File FileName="Assets\Scripts\StageA_TimeEffect.cs" Line="31" Column="38" />
+      <File FileName="Assets\Scripts\Player\PlayerController.cs" Line="87" Column="60" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
