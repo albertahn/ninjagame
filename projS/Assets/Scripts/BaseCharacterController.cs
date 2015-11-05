@@ -106,12 +106,21 @@ public class BaseCharacterController : MonoBehaviour {
 
 		FixedUpdateCharacter ();
 
+		if(grounded){
+			speedVxAddPower = 0.0f;
+			if(groundCheck_OnMoveObject !=null){
+				Rigidbody2D rb2D = groundCheck_OnMoveObject.GetComponentInParent<Rigidbody2D>();
+				speedVxAddPower = rb2D.velocity.x;
+			}
+		}
+
+
 		if (addForceVxEnabled) {
 			if(Time.fixedTime - addForceVxStartTime > 0.5f){
 				addForceVxEnabled = false;
 			}
 		}else{
-			rigidbody2D.velocity = new Vector2 (speedVx, rigidbody2D.velocity.y);
+			rigidbody2D.velocity = new Vector2 (speedVx+speedVxAddPower, rigidbody2D.velocity.y);
 		}
 
 		if (addVelocityEnabled) {

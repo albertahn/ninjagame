@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_4_6_1;UNITY_4_6;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_6_1;UNITY_4_6;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -46,6 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\AppSound.cs" />
+     <Compile Include="Assets\Scripts\ApplicationStartup.cs" />
      <Compile Include="Assets\Scripts\BaseCharacterController.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\CombatAI.cs" />
@@ -58,24 +60,44 @@
      <Compile Include="Assets\Scripts\Enemy\EnemyMain_A.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyMain_B.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyMain_C.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyMain_D_Boss.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemySprite.cs" />
      <Compile Include="Assets\Scripts\FireBullet.cs" />
+     <Compile Include="Assets\Scripts\MenuObject_Button.cs" />
+     <Compile Include="Assets\Scripts\Menu_Logo.cs" />
      <Compile Include="Assets\Scripts\Player\ForAnimationEvent_p240.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerBodyController.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMain.cs" />
+     <Compile Include="Assets\Scripts\SaveData.cs" />
      <Compile Include="Assets\Scripts\StageA_Sun.cs" />
      <Compile Include="Assets\Scripts\StageA_TimeEffect.cs" />
      <Compile Include="Assets\Scripts\StageObject_BlockA.cs" />
+     <Compile Include="Assets\Scripts\StageObject_Damage.cs" />
+     <Compile Include="Assets\Scripts\StageObject_DestroySwitch.cs" />
      <Compile Include="Assets\Scripts\StageObject_DogPile.cs" />
+     <Compile Include="Assets\Scripts\StageObject_Elevator.cs" />
+     <Compile Include="Assets\Scripts\StageObject_KeyDoor.cs" />
+     <Compile Include="Assets\Scripts\StageObject_MoveBlock.cs" />
+     <Compile Include="Assets\Scripts\StageObject_Switch.cs" />
      <Compile Include="Assets\Scripts\StageTrigger_Camera.cs" />
      <Compile Include="Assets\Scripts\StageTrigger_CheckPoint.cs" />
+     <Compile Include="Assets\Scripts\StageTrigger_EventObject.cs" />
+     <Compile Include="Assets\Scripts\StageTrigger_EventSound.cs" />
      <Compile Include="Assets\Scripts\StageTrigger_Link.cs" />
      <Compile Include="Assets\Scripts\Stage_AfterImage.cs" />
      <Compile Include="Assets\Scripts\Stage_CreateStaticShadowAll.cs" />
      <Compile Include="Assets\Scripts\Stage_Shadow.cs" />
      <Compile Include="Assets\Scripts\Unity2DSortingLayer.cs" />
+     <Compile Include="Assets\Scripts\zFoxDataPackString.cs" />
+     <Compile Include="Assets\Scripts\zFoxDontDestroyOnLoad.cs" />
+     <Compile Include="Assets\Scripts\zFoxFadeFilter.cs" />
+     <Compile Include="Assets\Scripts\zFoxGameObjectLoader.cs" />
+     <Compile Include="Assets\Scripts\zFoxMenuGenerateUID.cs" />
+     <Compile Include="Assets\Scripts\zFoxSoundManager.cs" />
      <Compile Include="Assets\Scripts\zFoxTween.cs" />
+     <Compile Include="Assets\Scripts\zFoxUID.cs" />
+     <Compile Include="Assets\Scripts\zFoxVirtualPad.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>

@@ -41,7 +41,7 @@ public class EnemyMain : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	public virtual void Start () {
 		StageObject_DogPile[] dogPileList = GameObject.FindObjectsOfType<StageObject_DogPile> ();
 
 		foreach(StageObject_DogPile findDogPile in dogPileList){

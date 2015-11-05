@@ -26,6 +26,11 @@ public class PlayerController : BaseCharacterController {
 	public static float nowHp = 0;
 	public static int score = 0;
 
+	public static bool itemKeyA = false;
+	public static bool itemKeyB = false;
+	public static bool itemKeyC = false;
+
+
 	[System.NonSerialized]public Vector3 enemyActiveZonePointA;
 	[System.NonSerialized]public Vector3 enemyActiveZonePointB;
 	[System.NonSerialized]public float groundY = 0.0f;
@@ -44,6 +49,8 @@ public class PlayerController : BaseCharacterController {
 	public static float checkPointHp = 0;
 	public static bool initParam = true;
 
+	public static float startFadeTime = 2.0f;
+
 	public static GameObject GetGameObject(){
 		return GameObject.FindGameObjectWithTag ("Player");
 	}
@@ -60,6 +67,8 @@ public class PlayerController : BaseCharacterController {
 	protected override void Awake(){
 		base.Awake ();
 
+		GameObject.Find("VRPad").SetActive(true);
+
 		hudHpBar = GameObject.Find ("HUD_HPBar").GetComponent<LineRenderer> ();
 		hudScore = GameObject.Find ("HUD_Score").GetComponent<TextMesh> ();
 		hudCombo = GameObject.Find ("HUD_Combo").GetComponent<TextMesh> ();
@@ -74,10 +83,29 @@ public class PlayerController : BaseCharacterController {
 			(boxCol2D.center.x + boxCol2D.size.x / 2.0f, boxCol2D.center.y + boxCol2D.size.y / 2.0f);
 		boxCol2D.transform.gameObject.SetActive (false);
 
+		if(SaveData.continuePlay){
+			if(!SaveData.LoadGamePlay(true)){
+				initParam = false;
+			}
+			SaveData.continuePlay = false;
+		}
+
 		if(initParam){
 			SetHP(initHpMax,initHpMax);
+			PlayerController.score = 0;
+			PlayerController.checkPointEnabled = false;
+			PlayerController.checkPointLabelName = "";
+			PlayerController.checkPointSceneName = Application.loadedLevelName;
+			PlayerController.checkPointHp = initHpMax;
+			PlayerController.itemKeyA = false;
+			PlayerController.itemKeyB = false;
+			PlayerController.itemKeyC = false;
+			SaveData.DeleteAndInit(false);
 			initParam = false;
+		}else{
+			SaveData.LoadGamePlay(false);
 		}
+
 		if(SetHP(PlayerController.nowHp,PlayerController.nowHpMax)){
 			SetHP(1,initHpMax);
 		}
@@ -95,6 +123,20 @@ public class PlayerController : BaseCharacterController {
 		}
 		Camera.main.transform.position = new Vector3 (
 			transform.position.x, groundY, Camera.main.transform.position.z);
+
+		GameObject.Find("VRPad").SetActive(SaveData.VRPadEnabled);
+
+		Transform hud = GameObject.FindGameObjectWithTag("SubCamera").transform;
+		hud.Find("Stage_Item_Key_A").GetComponent<SpriteRenderer>().enabled = itemKeyA;
+		hud.Find("Stage_Item_Key_B").GetComponent<SpriteRenderer>().enabled = itemKeyB;
+		hud.Find("Stage_Item_Key_C").GetComponent<SpriteRenderer>().enabled = itemKeyC;
+	}
+
+	protected override void Start(){
+		base.Start ();
+
+		zFoxFadeFilter.instance.FadeIn(Color.black,startFadeTime);
+		startFadeTime = 2.0f;
 	}
 
 	protected override void Update(){
@@ -172,6 +214,12 @@ public class PlayerController : BaseCharacterController {
 				if(link!=null){
 					link.Jump();
 				}
+			}else if(other.tag =="KeyDoor"){
+				StageObject_KeyDoor keydoor = other.GetComponent<StageObject_KeyDoor>();
+				keydoor.OpenDoor();
+			}else if(other.name =="Stage_Switch_Body"){
+				StageObject_Switch sw = other.transform.parent.GetComponent<StageObject_Switch>();
+				sw.SwitchTurn();
 			}
 		}
 	}
@@ -281,6 +329,10 @@ public class PlayerController : BaseCharacterController {
 	}
 
 	public void ActionDamage(float damage){
+		if(SaveData.debug_Invicible){
+			return;
+		}
+
 		if(!activeSts)
 			return;
 
@@ -303,6 +355,8 @@ public class PlayerController : BaseCharacterController {
 		}
 		base.Dead (gameOver);
 
+		zFoxFadeFilter.instance.FadeOut(Color.black,2.0f);
+
 		if(gameOver){
 			SetHP(0,hpMax);
 			Invoke("GameOver",3.0f);
@@ -312,20 +366,34 @@ public class PlayerController : BaseCharacterController {
 		}
 	
 		GameObject.Find ("HUD_Dead").GetComponent<MeshRenderer> ().enabled = true;
-		//GameObject.Find ("HUD_DeadShadow").GetComponent<MeshRenderer> ().enabled = true;
+	//	GameObject.Find ("HUD_DeadShadow").GetComponent<MeshRenderer> ().enabled = true;
+		if(GameObject.Find("VRPad")!=null){
+			GameObject.Find("VRPad").SetActive(false);
+		}
 	}
 
 	public void GameOver(){
-		score = 0;
-		nowHp = checkPointHp;
+		SaveData.SaveHiScore(score);
+		PlayerController.score = 0;
+		PlayerController.nowHp = PlayerController.checkPointHp;
+		SaveData.SaveGamePlay();
+
+		AppSound.instance.fm.Stop("BGM");
+		if(SaveData.newRecord>0){
+			AppSound.instance.BGM_HISCORE_RANKIN.Play();
+		}else{
+			AppSound.instance.BGM_HISCORE.Play();
+		}
+
 		Application.LoadLevel (Application.loadedLevelName);
 	}
 	void GameReset(){
+		SaveData.SaveGamePlay();
 		Application.LoadLevel (Application.loadedLevelName);
 	}
 
 	public override bool SetHP(float _hp,float _hpMax){
-		if(hp>_hpMax){
+		if(_hp>_hpMax){
 			_hp = _hpMax;
 		}
 		nowHp = _hp;

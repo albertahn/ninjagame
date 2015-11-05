@@ -9,6 +9,9 @@ public class StageTrigger_Link : MonoBehaviour {
 	public bool jumpInput = true;
 	public float jumpDelayTime = 0.0f;
 
+	public bool save = true;
+	public bool sePlay = true;
+
 	Transform playerTrfm;
 	PlayerController playerCtrl;
 
@@ -32,7 +35,9 @@ public class StageTrigger_Link : MonoBehaviour {
 		PlayerController.checkPointLabelName = jumpLabelName;
 		PlayerController.checkPointSceneName = jumpSceneName;
 		PlayerController.checkPointHp = PlayerController.nowHp;
-
+		if(save){
+			SaveData.SaveGamePlay();
+		}
 
 		playerCtrl.ActionMove (0.0f);
 		playerCtrl.activeSts = false;
@@ -54,6 +59,7 @@ public class StageTrigger_Link : MonoBehaviour {
 				}
 			}
 		}else{
+			PlayerController.startFadeTime = 0.5f;
 			Application.LoadLevel(jumpSceneName);
 		}
 	}
